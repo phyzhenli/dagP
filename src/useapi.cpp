@@ -41,6 +41,13 @@ int main(int argc, char *argv[])
     // opt.inipart = 6; // opt.inipart = IP_UNDIR;
     opt.runs = 5; // number of runs before selecting best edge cut
 
+    opt.use_binary_input = 0;
+
+    // fix error: In topsortPart, not every nodes are sorted: to = 0, nbpart = 2
+    // see https://github.com/GT-TDAlab/dagP/issues/5
+    opt.conpar = 0;
+    opt.inipart = 11;
+
     // read the graph from file with name from command-line arguments
     dagP_read_graph (argv[1], &G, &opt);
 
@@ -52,10 +59,10 @@ int main(int argc, char *argv[])
     // to the partitioning return value is edge cut, part assignments are written over parts array
     ecType x = dagP_partition_from_dgraph(&G, &opt, parts);
 
-    // // node id's are 1-indexed
-    // for(idxType i=1; i<= G.nVrtx; ++i){
-    //     printf("part[node:%d] = %d\n", i, parts[i]);
-    // }
+    // node id's are 1-indexed
+    for(idxType i=1; i<= G.nVrtx; ++i){
+        printf("part[node:%d] = %d\n", i, parts[i]);
+    }
 
     printf ("edge cut: %d\n", (int) x);
 
